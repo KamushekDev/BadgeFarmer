@@ -18,8 +18,6 @@ namespace BadgeFarmer
         public string Name => "Badge farmer";
         public Version Version => typeof(BadgeFarmer).Assembly.GetName().Version;
 
-        private const string Host = "https://steamcommunity.com/";
-
         public void OnLoaded()
         {
             Console.WriteLine("a");
@@ -33,8 +31,10 @@ namespace BadgeFarmer
             {
                 var result = await bot.ArchiWebHandler.UrlGetToHtmlDocumentWithSession(badge.PageUri.ToString(), "/");
                 var appIdSegment = badge.PageUri.Segments.Last();
-                var r = int.TryParse(appIdSegment.Substring(0, appIdSegment.Length - 1), out var gameId);
-                int a = 1;
+                var appIdParsed = int.TryParse(appIdSegment.Substring(0, appIdSegment.Length - 1), out var appId);
+                
+                
+                int a = 8;
             }
 
             return $"There are {badges.Count} uncompleted badges.";

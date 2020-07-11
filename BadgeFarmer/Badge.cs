@@ -5,6 +5,8 @@ namespace BadgeFarmer
 {
     public class Badge
     {
+        private const int MaxLevel = 5;
+        public int AvailableLevels => (Level >= MaxLevel && !IsCompleted) ? int.MaxValue : MaxLevel - Level;
         public string Name { get; private set; }
 
         public bool IsCompleted { get; private set; }
