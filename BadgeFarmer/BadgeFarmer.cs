@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using ArchiSteamFarm;
 using ArchiSteamFarm.Plugins;
+using Newtonsoft.Json;
+using SteamKit2;
 
 namespace BadgeFarmer
 {
@@ -16,7 +19,7 @@ namespace BadgeFarmer
     public class BadgeFarmer : IBotCommand
     {
         public string Name => "Badge farmer";
-        public Version Version => typeof(BadgeFarmer).Assembly.GetName().Version;
+        public Version Version => typeof(BadgeFarmer)?.Assembly.GetName().Version ?? new Version(0, 0);
 
         public void OnLoaded()
         {
@@ -27,14 +30,57 @@ namespace BadgeFarmer
         {
             var badges = await GetUncompletedBadges(bot);
 
+            var pricedBadges = new List<PricedBadge>();
+
             foreach (var badge in badges)
             {
-                var result = await bot.ArchiWebHandler.UrlGetToHtmlDocumentWithSession(badge.PageUri.ToString(), "/");
+                var badgePage =
+                    await bot.ArchiWebHandler.UrlGetToHtmlDocumentWithSession(badge.PageUri.ToString(), "/");
                 var appIdSegment = badge.PageUri.Segments.Last();
                 var appIdParsed = int.TryParse(appIdSegment.Substring(0, appIdSegment.Length - 1), out var appId);
-                
-                
-                int a = 8;
+
+                var currency = ECurrencyCode.RUB;
+
+                var cards = badgePage.QuerySelectorAll(".badge_card_set_card");
+
+                var cardNames = cards.Select(x =>
+                {
+                    var node = x.Children[1];
+
+                    while (node.ChildElementCount > 0)
+                    {
+                        node.RemoveChild(node.FirstElementChild);
+                    }
+
+                    return node.TextContent.Trim();
+                }).ToArray();
+
+                var cardLinks = cardNames
+                    .Select(x =>
+                        new Uri(
+                            $"{ArchiWebHandler.SteamCommunityURL}/market/priceoverview/?currency={currency}&appid=753&market_hash_name={appId}-{x}"))
+                    .ToArray();
+
+                var client = new HttpClient();
+
+                var cardPrices = new List<ItemPrice>();
+
+                foreach (var link in cardLinks)
+                {
+                    var response =
+                        await bot.ArchiWebHandler.UrlGetToJsonObjectWithSession<ItemPrice>(link.ToString(), "/");
+                    // response = await client.GetStringAsync(link);
+
+                    //var cardPage = await bot.ArchiWebHandler.UrlGetToHtmlDocumentWithSession(link.ToString(), "/");
+
+                    //var item = JsonConvert.DeserializeObject<ItemPrice>(response, new StringToDecimalConverter());
+
+                    cardPrices.Add(response);
+                }
+
+                var pricedBadge = new PricedBadge(badge, cardPrices, currency);
+
+                pricedBadges.Add(pricedBadge);
             }
 
             return $"There are {badges.Count} uncompleted badges.";

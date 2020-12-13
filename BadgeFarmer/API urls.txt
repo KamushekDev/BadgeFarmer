@@ -1,0 +1,30 @@
+https://steamcommunity.com/market/search/render/?search_descriptions=0&sort_column=default&sort_dir=desc&appid=578080&norender=1&count=500
+https://steamcommunity.com/market/search/render/?query=&start=0&count=10
+
+https://steamcommunity.com/market/priceoverview/?country=US&currency=5&appid=753&market_hash_name=336940-Bankers
+
+https://steamcommunity.com/market/listings/730/StatTrak%E2%84%A2%20AK-47%20%7C%20Blue%20Laminate%20%28Factory%20New%29/render?start=0&count=5&currency=5&language=english
+
+https://steamcommunity.com/market/multibuy?appid=753&items[]=336940-Bankers&qty[]=0&items[]=336940-Infantry&qty[]=7
+
+http://steamcommunity.com/market/pricehistory/?country=DE&currency=3&appid=440&market_hash_name=Specialized%20Killstreak%20Brass%20Beast
+
+https://steamcommunity.com/market/itemordershistogram?country=RU&language=english&currency=5&item_nameid=1546282&two_factor=0
+
+POST https://steamcommunity.com/market/createbuyorder/
+sessionid: 4e53fe29978170cb92f84171
+currency: 5
+appid: 753
+market_hash_name: 474750-Dragon fire
+price_total: 277
+quantity: 1
+billing_state: 
+save_my_address: 0 
+
+POST https://steamcommunity.com/market/cancelbuyorder/
+sessionid: 4e53fe29978170cb92f84171
+buy_orderid: 3469653568
+
+https://steamcommunity.com/market/getbuyorderstatus/?sessionid=4e53fe29978170cb92f84171&buy_orderid=3469621272
+
+https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_2&appid=753&norender=1&start=1&pagesize=25
