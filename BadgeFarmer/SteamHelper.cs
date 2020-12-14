@@ -1,38 +1,51 @@
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using ArchiSteamFarm;
+using BadgeFarmer.Responses;
+using SteamKit2;
 
 namespace BadgeFarmer
 {
-    public class SteamHelper : IDisposable
+    internal sealed class SteamHelper
     {
-        private readonly ArchiWebHandler ArchiWebHandler;
+        private readonly Bot Bot;
         private readonly bool DisposeWebHandler;
 
-        public SteamHelper(ArchiWebHandler archiWebHandler, bool disposeWebHandler = false)
+        public const string SteamApiUrl = "https://api.steampowered.com/";
+
+        private const string IEconService = "IEconService";
+        private const string IPlayerService = "IPlayerService";
+        private const string ISteamApps = "ISteamApps";
+        private const string ISteamUserAuth = "ISteamUserAuth";
+        private const string ITwoFactorService = "ITwoFactorService";
+        private const string SteamCommunityHost = "steamcommunity.com";
+        private const string SteamHelpHost = "help.steampowered.com";
+        private const string SteamStoreHost = "store.steampowered.com";
+
+        public SteamHelper(Bot bot, bool disposeWebHandler = false)
         {
-            ArchiWebHandler = archiWebHandler;
+            Bot = bot;
             DisposeWebHandler = disposeWebHandler;
-            if (DisposeWebHandler)
-                GC.SuppressFinalize(this);
         }
 
-        #region IDisposable
-
-        public void Dispose() => Dispose(true);
-
-        private void Dispose(bool manual)
+        internal async Task<GetBadgesResponse> GetBadges()
         {
-            if (manual)
-                GC.SuppressFinalize(this);
-            if (DisposeWebHandler)
-                ArchiWebHandler.Dispose();
-        }
+            const string getBadges = "GetBadges";
 
-        ~SteamHelper()
-        {
-            Dispose(false);
-        }
+            var client = Bot.SteamConfiguration.GetAsyncWebAPIInterface(IPlayerService);
+            var (success, key) = await Bot.ArchiWebHandler.CachedApiKey.GetValue();
+            if (!success)
+                throw new Exception();
+            var response = await client.CallAsync(HttpMethod.Get, getBadges,
+                args: new Dictionary<string, object>
+                {
+                    {"input_json", $"{{\"steamid\":\"{Bot.SteamID}\"}}"},
+                    {"key", key!}
+                });
 
-        #endregion
+            throw null;
+        }
     }
 }
