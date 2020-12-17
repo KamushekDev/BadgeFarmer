@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ArchiSteamFarm;
+using BadgeFarmer.Models;
 using BadgeFarmer.Responses;
+using Microsoft.OpenApi.Expressions;
 using SteamKit2;
 
 namespace BadgeFarmer
@@ -30,7 +33,7 @@ namespace BadgeFarmer
             DisposeWebHandler = disposeWebHandler;
         }
 
-        internal async Task<GetBadgesResponse> GetBadges()
+        internal async Task<BadgesResponse> GetBadges()
         {
             const string getBadges = "GetBadges";
 
@@ -45,7 +48,26 @@ namespace BadgeFarmer
                     {"key", key!}
                 });
 
-            throw null;
+            var badges = response.Children.First(x => x.Name == "badges").Children
+                .Select(x => new Badge(
+                    int.Parse(x["badgeid"].Value),
+                    int.Parse(x["level"].Value),
+                    int.Parse(x["completion_time"].Value),
+                    int.Parse(x["xp"].Value),
+                    int.Parse(x["scarcity"].Value)
+                ));
+
+            var badgesResponse = new BadgesResponse(
+                badges.ToList(),
+                int.Parse(response["player_xp"].Value),
+                int.Parse(response["player_level"].Value),
+                int.Parse(response["player_xp_needed_to_level_up"].Value),
+                int.Parse(response["player_xp_needed_current_level"].Value)
+                );
+
+            // var var
+            
+            return badgesResponse;
         }
     }
 }

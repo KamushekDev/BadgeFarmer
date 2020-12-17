@@ -3,7 +3,7 @@ using System.Security.Policy;
 
 namespace BadgeFarmer
 {
-    public class Badge
+    public class BadgeOLD
     {
         private const int MaxLevel = 5;
         public int AvailableLevels => (Level >= MaxLevel && !IsCompleted) ? int.MaxValue : MaxLevel - Level;
@@ -15,7 +15,7 @@ namespace BadgeFarmer
 
         public Uri PageUri { get; private set; }
         
-        public Badge(string name, bool isCompleted, int level, Uri pageUri)
+        public BadgeOLD(string name, bool isCompleted, int level, Uri pageUri)
         {
             Name = name;
             IsCompleted = isCompleted;

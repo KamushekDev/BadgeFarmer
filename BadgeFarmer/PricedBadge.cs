@@ -7,15 +7,15 @@ namespace BadgeFarmer
 {
     public class PricedBadge
     {
-        public Badge Badge { get; }
+        public BadgeOLD BadgeOld { get; }
 
         public decimal Price { get; }
 
         public ECurrencyCode Currency { get; }
 
-        public PricedBadge(Badge badge, IList<ItemPrice> prices, ECurrencyCode currency)
+        public PricedBadge(BadgeOLD badgeOld, IList<ItemPrice> prices, ECurrencyCode currency)
         {
-            Badge = badge;
+            BadgeOld = badgeOld;
             Currency = currency;
 
             decimal price = 0;//prices.Sum(x => x.LowerPrice);
