@@ -1,6 +1,6 @@
 namespace BadgeFarmer.Responses
 {
-    public class ResponseWrapper<TResponse> where TResponse : IResponse
+    public class ResponseWrapper<TResponse>
     {
         public TResponse Response { get; init; }
 

@@ -70,4 +70,9 @@ namespace BadgeFarmer
             return badgesResponse;
         }
     }
+
+    public static partial class A
+    {
+        static partial void G(this KeyValue keyValue);
+    }
 }

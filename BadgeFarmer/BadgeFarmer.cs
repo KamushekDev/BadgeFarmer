@@ -25,7 +25,7 @@ namespace BadgeFarmer
 
         public void OnLoaded()
         {
-            Console.WriteLine("Badge farmer was loaded");
+            Console.WriteLine($"{nameof(BadgeFarmer)} plugin was loaded.");
         }
 
         public async Task<string> OnBotCommand(Bot bot, ulong steamID, string message, string[] args)
