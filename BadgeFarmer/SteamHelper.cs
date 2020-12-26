@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ArchiSteamFarm;
 using BadgeFarmer.Models;
-using BadgeFarmer.Responses;
+using BadgeFarmer.Models.Responses;
 using Microsoft.OpenApi.Expressions;
 using SteamKit2;
 
@@ -14,7 +14,6 @@ namespace BadgeFarmer
     internal sealed class SteamHelper
     {
         private readonly Bot Bot;
-        private readonly bool DisposeWebHandler;
 
         public const string SteamApiUrl = "https://api.steampowered.com/";
 
@@ -27,10 +26,9 @@ namespace BadgeFarmer
         private const string SteamHelpHost = "help.steampowered.com";
         private const string SteamStoreHost = "store.steampowered.com";
 
-        public SteamHelper(Bot bot, bool disposeWebHandler = false)
+        public SteamHelper(Bot bot)
         {
             Bot = bot;
-            DisposeWebHandler = disposeWebHandler;
         }
 
         internal async Task<BadgesResponse> GetBadges()
@@ -48,31 +46,60 @@ namespace BadgeFarmer
                     {"key", key!}
                 });
 
-            var badges = response.Children.First(x => x.Name == "badges").Children
-                .Select(x => new Badge(
-                    int.Parse(x["badgeid"].Value),
-                    int.Parse(x["level"].Value),
-                    int.Parse(x["completion_time"].Value),
-                    int.Parse(x["xp"].Value),
-                    int.Parse(x["scarcity"].Value)
-                ));
+            try
+            {
+                var badgesResponse = response.As<ResponseWrapper<BadgesResponse>>().Response;
+                return badgesResponse;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-            var badgesResponse = new BadgesResponse(
-                badges.ToList(),
-                int.Parse(response["player_xp"].Value),
-                int.Parse(response["player_level"].Value),
-                int.Parse(response["player_xp_needed_to_level_up"].Value),
-                int.Parse(response["player_xp_needed_current_level"].Value)
-                );
-
-            // var var
-            
-            return badgesResponse;
+            return null;
         }
-    }
 
-    public static partial class A
-    {
-        static partial void G(this KeyValue keyValue);
+        internal async Task<int> GetGames()
+        {
+            var client = Bot.SteamConfiguration.GetAsyncWebAPIInterface(ISteamApps);
+            var response = await client.CallAsync(HttpMethod.Get, "GetAppList", 2);
+
+            return 0;
+        }
+
+
+        internal async Task<MarketSearchResponse> GetPrices(
+            string query = "",
+            string itemClass = "tag_item_class_2",
+            string sortColumn = "price",
+            string sortDir = "desc",
+            string appid = "753",
+            string game = "any",
+            int start = 1,
+            int count = 100)
+        {
+            var searchParams =
+                $"q={query}&category_753_Game%5B%5D={game}&category_753_item_class%5B%5D={itemClass}&appid={appid}";
+            var pagingParams =
+                $"start={start}&count={count}&sort_column={sortColumn}&sort_dir={sortDir}";
+
+            var response =
+                await Bot.ArchiWebHandler.UrlGetToJsonObjectWithSession<MarketSearchResponse>(
+                    "https://steamcommunity.com",
+                    $"/market/search/render/?{searchParams}&{pagingParams}&norender=1");
+
+
+            if (response?.Content != null)
+                return response.Content;
+            throw new Exception();
+        }
+
+
+        //https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_2&appid=753&start=1&sort_column=price&sort_dir=desc&count=500&norender=1
+        //https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_2&appid=753&norender=1
+        //https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=tag_app_730&category_753_item_class%5B%5D=tag_item_class_2&appid=753&norender=1
+        internal async Task GetCardPrices()
+        {
+        }
     }
 }

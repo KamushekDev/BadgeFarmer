@@ -28,3 +28,7 @@ buy_orderid: 3469653568
 https://steamcommunity.com/market/getbuyorderstatus/?sessionid=4e53fe29978170cb92f84171&buy_orderid=3469621272
 
 https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_2&appid=753&norender=1&start=1&pagesize=25
+
+https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_2&appid=753&start=1&pagesize=25&sort_column=price&sort_dir=desc&count=500&norender=1
+https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=any&category_753_item_class%5B%5D=tag_item_class_2&appid=753&norender=1
+https://steamcommunity.com/market/search/render/?q=&category_753_Game%5B%5D=tag_app_730&category_753_item_class%5B%5D=tag_item_class_2&appid=753&norender=1
