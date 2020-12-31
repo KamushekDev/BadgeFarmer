@@ -18,6 +18,9 @@ ij_wrap_on_typing = false
 []
 ij_proto_keep_indents_on_empty_lines = false
 
+# ReSharper properties
+resharper_max_attribute_length_for_same_line = 120
+
 [*.css]
 ij_css_align_closing_brace_with_properties = false
 ij_css_blank_lines_around_nested_selector = 1

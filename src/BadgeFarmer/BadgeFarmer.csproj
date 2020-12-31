@@ -14,7 +14,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ArchiSteamFarm\ArchiSteamFarm\ArchiSteamFarm.csproj">
+        <ProjectReference Include="..\..\ArchiSteamFarm\ArchiSteamFarm\ArchiSteamFarm.csproj">
             <Private>False</Private>
         </ProjectReference>
     </ItemGroup>
@@ -27,7 +27,7 @@
         <ItemGroup>
             <Plugin Include="$(ProjectDir)$(OutDir)$(AssemblyName).dll" />
         </ItemGroup>
-        <Copy SourceFiles="@(Plugin)" DestinationFolder="$(ProjectDir)..\ArchiSteamFarm\ArchiSteamFarm\bin\$(Configuration)\$(TargetFramework)\plugins" />
+        <Copy SourceFiles="@(Plugin)" DestinationFolder="$(ProjectDir)..\..\ArchiSteamFarm\ArchiSteamFarm\bin\$(Configuration)\$(TargetFramework)\plugins" />
     </Target>
 
 </Project>

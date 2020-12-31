@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using BadgeFarmer.Models;
+using Newtonsoft.Json;
 using SteamKit2;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BadgeFarmer
 {
@@ -31,9 +28,14 @@ namespace BadgeFarmer
 
             var typeProps = type
                 .GetProperties()
-                .ToDictionary(x => x.Name,
-                    x => x.GetCustomAttributesData()
-                        .FirstOrDefault(x => x.AttributeType == typeof(JsonPropertyNameAttribute))
+                .Select(x => new
+                {
+                    prop = x, attr = x.GetCustomAttributesData()
+                        .FirstOrDefault(x => x.AttributeType == typeof(JsonPropertyAttribute))
+                })
+                .Where(x => x.attr != null)
+                .ToDictionary(x => x.prop.Name,
+                    x => x.attr!
                         .ConstructorArguments
                         .First().Value as string
                 );
@@ -102,7 +104,7 @@ namespace BadgeFarmer
                     .GetProperties()
                     .ToDictionary(x => x.Name,
                         x => x.GetCustomAttributesData()
-                            .FirstOrDefault(x => x.AttributeType == typeof(JsonPropertyNameAttribute))
+                            .FirstOrDefault(x => x.AttributeType == typeof(JsonPropertyAttribute))
                             .ConstructorArguments
                             .First().Value as string
                     );

@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadgeFarmer", "BadgeFarmer\BadgeFarmer.csproj", "{17DE45E9-C22C-43EF-A22F-ED06FB835249}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadgeFarmer", "src\BadgeFarmer\BadgeFarmer.csproj", "{17DE45E9-C22C-43EF-A22F-ED06FB835249}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiSteamFarm", "ArchiSteamFarm\ArchiSteamFarm\ArchiSteamFarm.csproj", "{FC574A51-BA41-4784-ACB9-99266C3669B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadgeFarmer.Tests", "tests\BadgeFarmer.Tests\BadgeFarmer.Tests.csproj", "{77A68974-DBF7-4F81-A308-FC9A3344F70B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{FC574A51-BA41-4784-ACB9-99266C3669B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC574A51-BA41-4784-ACB9-99266C3669B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC574A51-BA41-4784-ACB9-99266C3669B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A68974-DBF7-4F81-A308-FC9A3344F70B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A68974-DBF7-4F81-A308-FC9A3344F70B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A68974-DBF7-4F81-A308-FC9A3344F70B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A68974-DBF7-4F81-A308-FC9A3344F70B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
