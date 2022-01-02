@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <LangVersion>default</LangVersion>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -17,6 +19,7 @@
         <ProjectReference Include="..\ArchiSteamFarm\ArchiSteamFarm\ArchiSteamFarm.csproj">
             <Private>False</Private>
         </ProjectReference>
+        <ProjectReference Include="..\SteamUtils\SteamUtils.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,9 +28,16 @@
 
     <Target Name="CopyPlugin" AfterTargets="Build">
         <ItemGroup>
-            <Plugin Include="$(ProjectDir)$(OutDir)$(AssemblyName).dll" />
+            <Plugin Include="$(ProjectDir)$(OutDir)*.dll" />
         </ItemGroup>
-        <Copy SourceFiles="@(Plugin)" DestinationFolder="$(ProjectDir)..\ArchiSteamFarm\ArchiSteamFarm\bin\$(Configuration)\$(TargetFramework)\plugins" />
+        <Copy SourceFiles="@(Plugin)" DestinationFolder="$(ProjectDir)..\ArchiSteamFarm\ArchiSteamFarm\bin\$(Configuration)\$(TargetFramework)\plugins\BadgeFarmer" />
     </Target>
 
+<!--    <Target Name="ILMerge" AfterTargets="Build">-->
+<!--        <ItemGroup>-->
+<!--            <Dlls Include="$(ProjectDir)$(OutDir)*.dll"  />-->
+<!--            <Plugin Include="$(ProjectDir)$(OutDir)$(AssemblyName).dll" />-->
+<!--        </ItemGroup>-->
+<!--        <Exec Command="$(ILMergeConsolePath) /out:$(AssemblyName)_Merged.dll /targetplatform:v4,$(ProjectDir)$(OutDir) @(Dlls, ' ')" />-->
+<!--    </Target>-->
 </Project>

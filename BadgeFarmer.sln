@@ -4,6 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadgeFarmer", "BadgeFarmer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiSteamFarm", "ArchiSteamFarm\ArchiSteamFarm\ArchiSteamFarm.csproj", "{FC574A51-BA41-4784-ACB9-99266C3669B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadgeFarmer.Tests", "BadgeFarmer.Tests\BadgeFarmer.Tests.csproj", "{FF76454F-6059-4286-B733-2265E771F347}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamUtils", "SteamUtils\SteamUtils.csproj", "{0E6CB52D-07FD-4EB4-8363-DA434A5B5749}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadgeFarmer.Core", "BadgeFarmer.Core\BadgeFarmer.Core.csproj", "{DE657BA6-AA66-4839-BF5C-167E135DC924}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,17 @@ Global
 		{FC574A51-BA41-4784-ACB9-99266C3669B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC574A51-BA41-4784-ACB9-99266C3669B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC574A51-BA41-4784-ACB9-99266C3669B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF76454F-6059-4286-B733-2265E771F347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF76454F-6059-4286-B733-2265E771F347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF76454F-6059-4286-B733-2265E771F347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF76454F-6059-4286-B733-2265E771F347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E6CB52D-07FD-4EB4-8363-DA434A5B5749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6CB52D-07FD-4EB4-8363-DA434A5B5749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6CB52D-07FD-4EB4-8363-DA434A5B5749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6CB52D-07FD-4EB4-8363-DA434A5B5749}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE657BA6-AA66-4839-BF5C-167E135DC924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE657BA6-AA66-4839-BF5C-167E135DC924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE657BA6-AA66-4839-BF5C-167E135DC924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE657BA6-AA66-4839-BF5C-167E135DC924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

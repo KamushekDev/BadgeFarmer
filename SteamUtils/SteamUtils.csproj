@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="RestEase" Version="1.5.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BadgeFarmer.Core\BadgeFarmer.Core.csproj" />
+    </ItemGroup>
+
+</Project>

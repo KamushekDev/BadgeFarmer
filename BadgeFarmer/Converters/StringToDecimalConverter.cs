@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Newtonsoft.Json;
 
-namespace BadgeFarmer
+namespace BadgeFarmer.Converters
 {
     class StringToDecimalConverter:JsonConverter<decimal>
     {

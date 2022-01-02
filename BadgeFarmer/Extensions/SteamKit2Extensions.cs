@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using BadgeFarmer.Models;
 using SteamKit2;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BadgeFarmer
+namespace BadgeFarmer.Extensions
 {
     public static class SteamKit2Extensions
     {
