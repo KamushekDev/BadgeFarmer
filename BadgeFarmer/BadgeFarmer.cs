@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Composition;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using ArchiSteamFarm;
-using ArchiSteamFarm.NLog;
 using ArchiSteamFarm.Plugins;
 using BadgeFarmer.Clients;
+using BadgeFarmer.Commands;
 using BadgeFarmer.Services;
+using Microsoft.Extensions.DependencyInjection;
 using SteamKit2;
-using SteamUtils.Models;
 
 namespace BadgeFarmer
 {
@@ -19,93 +17,53 @@ namespace BadgeFarmer
         public string Name => "Badge farmer";
         public Version Version => typeof(BadgeFarmer)?.Assembly.GetName().Version ?? new Version(0, 1);
 
-        private CustomSteamClient SteamClient;
-        private ICardsService CardsService;
+        private IServiceProvider _serviceProvider;
+
+        private bool _isActive = false;
 
         public void OnLoaded()
         {
             Console.WriteLine($"{nameof(BadgeFarmer)} plugin was loaded.");
         }
 
-        public async Task<string> OnBotCommand(Bot bot, ulong steamID, string message, string[] args)
+        public async Task<string> OnBotCommand(Bot bot, ulong steamId, string message, string[] args)
         {
+            if (!_isActive)
+                return "Badge farmer isn't active. Does the bot correctly logged in?";
+
+            var command = new CommandParser().Parse(message);
             try
             {
-                if (SteamClient != null)
-                {
-                    var commands = message.Split(' ').Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-                    var first = commands.First();
-                    if (first == "cards")
-                    {
-                        var second = commands.Skip(1).First();
-                        if (second == "update-cache")
-                        {
-                            var progress = new Progress<(int current, int total)>(p =>
-                            {
-                                ASF.ArchiLogger.LogGenericInfo($"Updating cache: {p.current} out of {p.total}.");
-                            });
-                            CardsService.UpdateCache(progress);
-                            return "Cache update is started...";
-                        }
-                        else if (second == "save")
-                        {
-                            await CardsService.SaveCache();
-                            return "Cache was saved.";
-                        }
-                        else if (second == "load")
-                        {
-                            await CardsService.LoadCache();
-                            return "Cache was loaded.";
-                        }
-                        else if (second == "count")
-                        {
-                            return $"Service have info about {CardsService.CardsTotal} cards";
-                        }
-                    }
-                    else if (first == "proxy")
-                    {
-                        var second = commands.Skip(1).First();
-                        if (second == "update")
-                        {
-                            var proxies =
-                                await File.ReadAllLinesAsync(Path.Combine(SharedInfo.ConfigDirectory, "Proxies.txt"));
-                        }
-                    }
-
-                    return "Unknown command";
-
-                    // switch (message[0])
-                    // {
-                    //     case '0':
-                    //         var badges = await SteamClient.GetBadges();
-                    //         return $"Badges success. Total badges: {badges.Badges.Count}.";
-                    //     case '1':
-                    //         var games = await SteamClient.GetGames();
-                    //         return $"Games success. Total games: {games}.";
-                    //     case '2':
-                    //         var prices = await SteamClient.GetPrices(new SearchMarketRequest());
-                    //         return $"Card prices success. Success: {prices.Success}. Total cards: {prices.TotalCount}.";
-                    //     default:
-                    // }
-                }
-
-                return "Steam client is null :c";
+                var executor = _serviceProvider.GetRequiredService<ICommandExecutor>();
+                var result = await executor.Execute(command);
+                return result;
             }
             catch (Exception e)
             {
-                return $"Exception was thrown: {e.Message}";
+                bot.ArchiLogger.LogGenericException(e);
+                throw;
             }
         }
 
         public void OnBotDisconnected(Bot bot, EResult reason)
         {
-            SteamClient = null;
+            _isActive = false;
         }
 
         public void OnBotLoggedOn(Bot bot)
         {
-            SteamClient = new CustomSteamClient(bot);
-            CardsService = new CardsService(SteamClient, ArchiSteamFarm.SharedInfo.ConfigDirectory);
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<IFileSaver, FileSaver>();
+            serviceCollection.AddSingleton<ICustomSteamClient>(new CustomSteamClient(bot));
+            serviceCollection.AddSingleton<ICardsService, CardsService>();
+            serviceCollection.AddSingleton<IBadgesService, BadgesService>();
+            serviceCollection.AddSingleton<IInventoryService, InventoryService>();
+            
+            serviceCollection.AddSingleton<ICommandExecutor, CommandExecutor>();
+
+            _serviceProvider = serviceCollection.BuildServiceProvider(true);
+
+            _isActive = true;
         }
     }
 }

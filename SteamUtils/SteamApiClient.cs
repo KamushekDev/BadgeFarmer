@@ -4,16 +4,16 @@ namespace SteamUtils;
 
 public class SteamApiClient : ISteamApiClient
 {
-    private readonly ISteamApi Api;
+    private readonly ISteamApi _api;
 
     public SteamApiClient(ISteamApi api)
     {
-        Api = api;
+        _api = api;
     }
 
     public Task<SearchMarketResponse> SearchMarket(SearchMarketRequest request)
     {
-        return Api.MarketSearch(request.Query,
+        return _api.MarketSearch(request.Query,
             request.Game,
             request.ItemClass,
             request.AppId,

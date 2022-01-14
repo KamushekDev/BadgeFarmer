@@ -62,9 +62,10 @@ public record SearchMarketResponse(
                 Name = this.Name,
                 AppName = this.AppName,
                 HashName = this.HashName,
+                MarketHashName = AssetDescription.MarketHashName,
                 SellListings = this.SellListings,
                 SellPrice = this.SellPrice,
-                AppId = this.HashName.Substring(0, HashName.IndexOf('-'))
+                AppId = int.Parse(this.HashName.Substring(0, HashName.IndexOf('-')))
             };
         }
     }

@@ -7,18 +7,18 @@ namespace BadgeFarmer.Tests;
 
 public class RequestTests
 {
-    private readonly Fixture Fixture;
+    private readonly Fixture _fixture;
 
     public RequestTests()
     {
-        Fixture = new Fixture();
+        _fixture = new Fixture();
     }
 
     [Fact]
     public void GetPricesRequestQueryTest()
     {
         // ARRANGE 
-        var req = Fixture.Create<SearchMarketRequest>();
+        var req = _fixture.Create<SearchMarketRequest>();
 
         var expected =
             $"/market/search/render/?q={req.Query}&category_753_Game%5B%5D={req.Game}" +
